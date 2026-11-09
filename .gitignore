@@ -1,0 +1,7 @@
+data/
+venv/
+__pycache__/
+*.pyc
+app/uploads/
+models/checkpoint.keras
+.DS_Store
