@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENTINEL // Anomaly Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css?v=2">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◆</span>
+    <span class="brand-name">SENTINEL</span>
+    <span class="brand-sub">ANOMALY WATCH / ST-AE v1</span>
+  </div>
+  <div class="sys-status" id="sysStatus">
+    <span class="rec-dot" id="recDot"></span>
+    <span id="sysStatusText">INITIALIZING</span>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ================= VIDEO PANEL ================= -->
+  <section class="viewfinder" id="viewfinder">
+    <div class="vf-corner tl"></div>
+    <div class="vf-corner tr"></div>
+    <div class="vf-corner bl"></div>
+    <div class="vf-corner br"></div>
+
+    <div class="vf-label vf-label-top">
+      <span id="sourceLabel">NO SOURCE</span>
+    </div>
+    <div class="vf-label vf-label-time" id="clock">00:00:00</div>
+
+    <div class="vf-content" id="vfContent">
+      <p class="vf-placeholder">SELECT AN INPUT SOURCE BELOW</p>
+    </div>
+
+    <video id="webcamVideo" autoplay muted playsinline style="display:none;"></video>
+    <canvas id="webcamCanvas" width="128" height="128" style="display:none;"></canvas>
+
+    <div class="alert-flash" id="alertFlash"></div>
+  </section>
+
+  <!-- ================= SIDE PANEL ================= -->
+  <aside class="side-panel">
+
+    <div class="panel-block">
+      <h2 class="panel-title">STATUS</h2>
+      <div class="status-badge" id="statusBadge">
+        <span class="status-dot"></span>
+        <span id="statusText">STANDBY</span>
+      </div>
+      <div class="score-row">
+        <div class="score-item">
+          <span class="score-label">RECON. ERROR</span>
+          <span class="score-value" id="scoreValue">--</span>
+        </div>
+        <div class="score-item">
+          <span class="score-label">THRESHOLD</span>
+          <span class="score-value" id="thresholdValue">--</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-block">
+      <h2 class="panel-title">SIGNAL // LAST 60</h2>
+      <canvas id="waveform" width="320" height="110"></canvas>
+    </div>
+
+    <div class="panel-block">
+      <h2 class="panel-title">INPUT SOURCE</h2>
+      <div class="tabs">
+        <button class="tab-btn active" data-mode="upload">FILE UPLOAD</button>
+        <button class="tab-btn" data-mode="webcam">WEBCAM</button>
+        <button class="tab-btn" data-mode="rtsp">RTSP</button>
+      </div>
+
+      <div class="tab-panel active" data-panel="upload">
+        <label class="file-drop" for="fileInput">
+          <span id="fileDropText">DROP VIDEO FILE OR CLICK TO BROWSE</span>
+        </label>
+        <input type="file" id="fileInput" accept="video/*" hidden>
+        <button class="action-btn" id="analyzeBtn" disabled>ANALYZE FOOTAGE</button>
+        <div class="timeline-wrap" id="timelineWrap" style="display:none;">
+          <h3 class="panel-subtitle">CLIP TIMELINE</h3>
+          <div class="timeline" id="timeline"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="webcam">
+        <p class="hint-text">Streams your webcam to the model in real time over the buffered sliding window.</p>
+        <button class="action-btn" id="webcamStartBtn">START WEBCAM MONITOR</button>
+        <button class="action-btn secondary" id="webcamStopBtn" style="display:none;">STOP</button>
+      </div>
+
+      <div class="tab-panel" data-panel="rtsp">
+        <p class="hint-text">Point at an RTSP camera stream reachable from the server.</p>
+        <input type="text" id="rtspUrl" class="text-input" placeholder="rtsp://user:pass@host:554/stream">
+        <button class="action-btn" id="rtspStartBtn">CONNECT</button>
+        <button class="action-btn secondary" id="rtspStopBtn" style="display:none;">DISCONNECT</button>
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<script src="/static/app.js?v=2"></script>
+</body>
+</html>
